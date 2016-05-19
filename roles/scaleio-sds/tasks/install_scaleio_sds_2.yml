@@ -1,0 +1,2 @@
+set_fact: file_glob_name="{{ file_glob_name }}2-"
+include: ../../scaleio-common/tasks/install_scaleio.yml

@@ -1,3 +1,15 @@
+5655b02 modified site.yml for the refactor
+2ed0e14 Refactored for future galaxy integration
+a60badc Added documentation about ip variables
+8ccc492 Proper use of vagrant
+7fe0b96 reworked the test framework
+543076d Fixed an other hardcoded files/
+c7ecbba Fixed hardcoded ../files
+f7150fb Fixed scaleio_sdc_driver_sync_emc_public_gpg_key_src to use scaleio_common_file_install_file_location by default
+bf7cfce Documented scaleio_skip_java
+5e12b7d Renamed the roles for scaleio_<role_name> and moved the common files to scaleio_common
+a3cf412 Added the GUI
+1adc7c7 Updated the Changelog
 1f23591 Use v1.3 for ScaleIO 1.3x
 4cccac2 Removed left overs
 ef5edab Merge branch 'scaleio2.0'

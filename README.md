@@ -1,5 +1,6 @@
 ansible-scaleio
-======================
+===============
+
 ansible-scaleio is a way to manage [ScaleIO](http://www.emc.com/storage/scaleio/index.htm "ScaleIO") through [Ansible](http://www.ansible.com/home "Ansible").
 
 ## Description
@@ -50,7 +51,7 @@ To install ansible-scaleio just clone the repo and see site.yml as a generic pla
  | `scaleio_tb_secondary_hostname`| Secondary TB hostname | `"{{ hostvars[groups['tb'][1]]['inventory_hostname'] }}"` |
  | `scaleio_mdm_ips`| List of MDM IP's, depends on 3_node or 5_node mode | `"{{ scaleio_mdm_secondary_ip }},{{scaleio_mdm_primary_ip}}"` or `{{ scaleio_mdm_secondary_ip }},{{scaleio_mdm_primary_ip}},{{scaleio_mdm_tertiary_ip}` |
 
- The variables below are defined in the `group_vars/all` file but could be specified in other yaml file and load at
+ The variables below are defined in the `group_vars/all` file but could be specified in other YAML file and load at
  run time.
 
 | Variable | Description | Default value |
@@ -86,14 +87,20 @@ To install ansible-scaleio just clone the repo and see site.yml as a generic pla
 ## Usage Instructions
 
 Customize the roles and playbooks to your environment, you can use this to either to install ScaleIO or just enable the different modules on the nodes.
+
 ```
   ansible-playbook -i hosts site.yml
 ```
 
 ## Future
+
 - Extend to do more special setup with cache
 - Clean up the code (always more cleanup)
 - Upgrade between ScaleIO releases.
+
+## Authors
+
+ansible-scaleio was created by [Sebastien Perreault](https://github.com/sperreault/) and is in part sponsored by [EMC](http://www.emc.com/)
 
 ## Contribution
 

@@ -1,0 +1,5 @@
+scaleio_gateway_user_properties_file: '/opt/emc/scaleio/gateway/webapps/ROOT/WEB-INF/classes/gatewayUser.properties'
+scaleio_gateway_admin_password: 'Cluster1!'
+scaleio_gateway_is_redundant: false
+scaleio_gateway_virtual_ip: '192.168.33.99'
+scaleio_gateway_virtual_interface: "{{ scaleio_interface }}"

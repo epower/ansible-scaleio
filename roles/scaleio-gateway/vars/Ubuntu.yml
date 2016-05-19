@@ -1,0 +1,3 @@
+keepalived_packages:
+  - keepalived
+keepalived_config_file_location: /etc/keepalived

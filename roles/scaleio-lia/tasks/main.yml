@@ -1,0 +1,3 @@
+- set_fact: token="{{ scaleio_lia_token }}"
+
+- include: ../../scaleio-common/tasks/install_scaleio.yml

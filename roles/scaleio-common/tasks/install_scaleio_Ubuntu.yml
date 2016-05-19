@@ -1,0 +1,39 @@
+# vim:ft=ansible:
+---
+
+- name: copy files
+  unarchive: src="{{ item }}" dest="/var/tmp/" mode="0644"
+  register: ubuntu_tar_file
+  with_fileglob:
+    - "{{ scaleio_common_file_install_file_location }}/*{{ file_glob_name }}*.tar"
+  when: ansible_distribution == "Ubuntu"
+
+- name: siob_file
+  find: paths="/var/tmp/" patterns="*{{ file_glob_name }}*.siob"
+  register: siob_file
+  when: ubuntu_tar_file|changed
+- name: chmod siob_extract
+  file: path="/var/tmp/siob_extract" mode="0755"
+  when: ubuntu_tar_file|changed
+- name: exectute the siob_extract
+  command: /var/tmp/siob_extract "{{ siob_file.files[0].path }}" chdir="/var/tmp"
+  when: ubuntu_tar_file|changed
+
+- name: copy deb file
+  copy: src="{{ item }}" dest="/var/tmp" mode="0644"
+  with_fileglob:
+    - "{{ scaleio_common_file_install_file_location }}/*{{ file_glob_name }}*.deb"
+  when: ubuntu_tar_file|skipped
+
+- name: list the deb file
+  register: package_file
+  find: paths="/var/tmp/" patterns="*{{ file_glob_name }}*.deb"
+  when: ansible_distribution == "Ubuntu"
+
+- name: install package
+  package: deb="{{ package_file.files[0].path }}" state="present"
+  environment:
+    MDM_IP: "{{ scaleio_mdm_ips }}"
+    MDM_ROLE_IS_MANAGER: "{{ node_is_manager }}"
+    TOKEN: "{{ token }}"
+  when: ansible_distribution == "Ubuntu"

@@ -1,5 +1,7 @@
 files/*
 !files/README
 test/**/.vagrant/*
-site.retry
+*.retry
+gateway.yml
 test/**/ssh-config
+test/ubuntu/14.04_gateway

@@ -5,12 +5,12 @@ changelog:
 	git log --oneline > Changelog.txt
 
 .PHONY:
-test-ubuntu-trusty: clean
+test-ubuntu-trusty: 
 	cd test/ubuntu/14.04 && vagrant up && vagrant ssh-config > ssh-config
 	cd ../../
 	ansible-playbook $(ANSIBLE_FLAGS) \
 	--ssh-common-args="-F test/ubuntu/14.04/ssh-config" \
-  -e "scaleio_interface=eth1" \
+	-e "scaleio_interface=eth1" \
 	-e "scaleio_common_file_install_file_location=../scaleio-files/2.0/Ubuntu/14.04" \
 	-e "scaleio_sdc_driver_sync_emc_public_gpg_key_src=../scaleio-files/2.0/common/RPM-GPG-KEY-ScaleIO_2.0.5014.0" \
 	site.yml

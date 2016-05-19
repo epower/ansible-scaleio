@@ -1,4 +1,0 @@
-- include: "roles/scaleio_common/tasks/install_scaleio_java_{{ ansible_distribution }}.yml"
-  when: not scaleio_skip_java
-
-- include: ../../scaleio_common/tasks/install_scaleio.yml

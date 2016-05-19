@@ -1,0 +1,16 @@
+- name: include vars
+  include_vars: "../vars/{{ ansible_distribution }}.yml"
+
+- name: install required packages
+  package: name="{{ item }}" state=latest
+  with_items: "{{ keepalived_packages }}"
+
+- set_fact: keepalived_priority=100
+  run_once: true
+
+- set_fact: keepalived_priority=101
+  when: keepalived_priority is not defined
+
+- name: configure keepalived
+  template: src=keepalived.conf.j2 dest={{ keepalived_config_file_location }}/keepalived.conf
+  notify: restart keepalived

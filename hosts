@@ -21,6 +21,7 @@ node4
 
 [gateway]
 node2
+node3
 
 [gui]
 node0
