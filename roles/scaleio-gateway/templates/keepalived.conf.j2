@@ -2,7 +2,6 @@ vrrp_script chk_gateway {           # Requires keepalived-1.1.13
         script "killall -0 scaleio-gateway-wd.bash"     # cheaper than pidof
         interval 2                      # check every 2 seconds
         weight 2                        # add 2 points of prio if OK
-        
 }
 
 vrrp_instance gateway_vi_1 {
@@ -14,6 +13,6 @@ vrrp_instance gateway_vi_1 {
  	    {{ scaleio_gateway_virtual_ip }}
         }
         track_script {
-            chk_haproxy
+            chk_gateway
         }
 }
