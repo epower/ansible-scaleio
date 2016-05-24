@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Sebastien Perreault
-  description: Role for ScaleIO
+  description: LIA Role for ScaleIO
   company: EMC Corporation
   license: MIT
   min_ansible_version: 2.0

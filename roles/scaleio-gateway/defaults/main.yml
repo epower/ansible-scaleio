@@ -1,5 +1,10 @@
-scaleio_gateway_user_properties_file: '/opt/emc/scaleio/gateway/webapps/ROOT/WEB-INF/classes/gatewayUser.properties'
+# Admin password for the gateway
 scaleio_gateway_admin_password: 'Cluster1!'
+# Is the gateway redundant (will install keepalived)
 scaleio_gateway_is_redundant: false
-scaleio_gateway_virtual_ip: '192.168.33.99'
-scaleio_gateway_virtual_interface: "{{ scaleio_interface }}"
+# Virtual IP if redundant
+scaleio_gateway_virtual_ip: ''
+# Interface to attach the virtual ip
+scaleio_gateway_virtual_interface: eth1
+# Skip Java installation for ScaleIO (assume it's on the system)
+scaleio_skip_java: false

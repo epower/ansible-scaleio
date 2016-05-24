@@ -37,6 +37,7 @@ To install ansible-scaleio just clone the repo and see site.yml as a generic pla
  Some required variables are set in `site.yml` so please check then out, they mainly relates to your network setup and
  node naming.
 
+
  | Variable | Description | Default value |
  |----------|-------------|---------------|
  | `scaleio_mdm_primary_ip` | Primary MDM IP addresses (can be comma separated)| `{{ hostvars[groups['mdm'][0]]['ansible_'+scaleio_interface]['ipv4']['address'] }}"` |
@@ -56,7 +57,7 @@ To install ansible-scaleio just clone the repo and see site.yml as a generic pla
 
 | Variable | Description | Default value |
 |----------|-------------|---------------|
-| `scaleio_license:` | Not in use currently | `` |
+| `scaleio_license` | Not in use currently | `` |
 | `scaleio_protection_domain` | Protection domain name |  `protection_domain1` |
 | `scaleio_cluster_name` | Cluster name |  `cluster1` |
 | `scaleio_storage_pool` | Storage pool name |  `pool1` |
@@ -65,7 +66,9 @@ To install ansible-scaleio just clone the repo and see site.yml as a generic pla
 | `scaleio_password` | Password for the admin user |  `Cluster1!` |
 | `scaleio_common_file_install_file_location` | Where are the files that will need to be installed |  `../files` |
 | `scaleio_gateway_admin_password` | Admin password for the gateway |  `'Cluster1!'` |
-| `scaleio_gateway_user_properties_file` | Location of the properties file to manually set the password |  `'/opt/emc/scaleio/gateway/webapps/ROOT/WEB-INF/classes/gatewayUser.properties'`
+| `scaleio_gateway_is_redundant` | Is the gateway redundant (will install keepalived) |  `'false'` |
+| `scaleio_gateway_virtual_ip` | Virtual IP if redundant `` | '' |
+| `scaleio_gateway_virtual_interface` | Interface to attach the virtual ip | 'eth1' |
 | `scaleio_lia_token` | Lia password for node management |  `'Cluster1!'` |
 | `scaleio_lia_conf_file` | Lia configuration file to set the password |  `'/opt/emc/scaleio/lia/cfg/conf.txt'` |
 | `scaleio_sdc_driver_sync_repo_address` | Repository address for the kernel modules |  `'ftp://ftp.emc.com/'` |
