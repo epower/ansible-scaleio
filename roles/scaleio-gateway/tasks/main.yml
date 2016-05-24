@@ -1,10 +1,10 @@
 ---
-#- include: "roles/scaleio-common/tasks/install_scaleio_java_{{ ansible_distribution }}.yml"
-#  when: not scaleio_skip_java
+- include: "roles/scaleio-common/tasks/install_scaleio_java_{{ ansible_distribution }}.yml"
+  when: not scaleio_skip_java
 
-#- set_fact: token="{{ scaleio_gateway_admin_password }}"
+- set_fact: token="{{ scaleio_gateway_admin_password }}"
 
-#- include: ../../scaleio-common/tasks/install_scaleio.yml
+- include: ../../scaleio-common/tasks/install_scaleio.yml
 
 - include: install_keepalived.yml
   when: scaleio_gateway_is_redundant == "true"
