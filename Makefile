@@ -1,4 +1,4 @@
-ANSIBLE_FLAGS = -b -i hosts -e "ansible_python_interpreter=/usr/bin/python"
+ANSIBLE_FLAGS ?= -b -i hosts -e "ansible_python_interpreter=/usr/bin/python"
 SCALEIO_COMMON_FILE_INSTALL_FILE_LOCATION ?= ../scaleio-files
 
 .PHONY:
