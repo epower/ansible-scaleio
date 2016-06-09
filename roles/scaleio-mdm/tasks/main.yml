@@ -1,5 +1,5 @@
 - name: include vars
-  include_vars: "../vars/{{ ansible_distribution }}.yml"
+  include_vars: "..//vars/{{ ansible_distribution }}.yml"
 
 - name: install pre-requisite packages
   package: name={{ item }} state=latest
@@ -19,10 +19,10 @@
 - name: add primary mdm
   command: scli --create_mdm_cluster --master_mdm_ip {{ scaleio_mdm_primary_ip }} --master_mdm_management_ip {{ scaleio_mdm_primary_ip }} --master_mdm_name {{ scaleio_mdm_primary_hostname }}  --accept_license --approve_certificate
   run_once: true
-  register: add_primary_mdm
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
-  changed_when: (add_primary_mdm.rc == 0) or ('The Master MDM is already configured' in add_primary_mdm.stderr)
-  failed_when: add_primary_mdm.rc == 1
+  until: ("{{ add_primary_mdm.rc }} == 0") or ("{{ add_primary_mdm.rc }} == 7")
+  register: add_primary_mdm
+  ignore_errors: true
 
 - name: wait for mdm to be active
   wait_for: port=6611 state=started
@@ -33,20 +33,20 @@
   command: scli --login --username admin --password admin
   run_once: true
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
-  when: add_primary_mdm.rc == 0
+  ignore_errors: true
   register: initial_login
-
-- name: set password
-  command: scli --set_password --old_password admin --new_password "{{ scaleio_password }}"
-  run_once: true
-  delegate_to: "{{ scaleio_mdm_primary_hostname }}"
-  when: initial_login is not skipped
 
 - name: login with new password
   command: scli --login --username admin --password "{{ scaleio_password }}"
   run_once: true
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
-  when: (add_primary_mdm is changed) or (initial_login is changed)
+  when: initial_login.rc == 7
+
+- name: set password
+  command: scli --set_password --old_password admin --new_password "{{ scaleio_password }}"
+  run_once: true
+  delegate_to: "{{ scaleio_mdm_primary_hostname }}"
+  when: initial_login.rc == 0
 
 - name: secondary node login
   command: scli --login --mdm_ip {{ scaleio_mdm_primary_ip }} --username admin --password {{ scaleio_password }} --approve_certificate
@@ -55,23 +55,19 @@
 
 - name: add secondary mdm
   command: scli --add_standby_mdm --new_mdm_ip {{ scaleio_mdm_secondary_ip }} --mdm_role manager --new_mdm_management_ip {{ scaleio_mdm_secondary_ip }} --approve_certificate
-  register: add_secondary_mdm
-  changed_when: (add_secondary_mdm.rc == 0) or ('The IP already exists' in add_secondary_mdm.stderr)
-  failed_when: add_secondary_mdm.rc == 1
   run_once: true
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
+  ignore_errors: true
 
 - name: tertiary node login
   command: scli --login --mdm_ip {{ scaleio_mdm_primary_ip }} --username admin --password {{ scaleio_password }} --approve_certificate
   run_once: true
-  delegate_to: "{{ scaleio_mdm_primary_hostname }}"
+  delegate_to: "{{ scaleio_mdm_tertiary_hostname }}"
   when: scaleio_mdm_tertiary_ip is defined
 
-- name: add tertiary mdm
+- name: add secondary mdm
   command: scli --add_standby_mdm --new_mdm_ip {{ scaleio_mdm_tertiary_ip }} --mdm_role manager --new_mdm_management_ip {{ scaleio_mdm_tertiary_ip }} --approve_certificate
-  register: add_tertiary_mdm
-  changed_when: (add_tertiary_mdm.rc == 0) or ('The IP already exists' in add_tertiary_mdm.stderr)
-  failed_when: add_tertiary_mdm.rc == 1
   run_once: true
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
+  ignore_errors: true
   when: scaleio_mdm_tertiary_ip is defined
