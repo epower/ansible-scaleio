@@ -49,11 +49,11 @@
     - scaleio-tb
   tags: scaleio-tb
 
-#- hosts: gateway
-#  name: "Install and configure ScaleIO Gateway"
-#  roles:
-#    - scaleio-gateway
-#  tags: scaleio-gateway
+- hosts: gateway
+  name: "Install and configure ScaleIO Gateway"
+  roles:
+    - scaleio-gateway
+  tags: scaleio-gateway
 
 - hosts: sds
   name: "Install and configure ScaleIO SDS"
