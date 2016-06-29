@@ -1,2 +1,6 @@
-node_is_manager: 0
 file_glob_name: lia
+scaleio_role_environment:
+        - key: "MDM_IP"
+          value: "{{ scaleio_mdm_ips }}"
+        - key: "TOKEN"
+          value: "{{ scaleio_lia_token }}"

@@ -1,1 +1,5 @@
 scaleio_sds_disks: { ansible_available_disks: ['/home/vagrant/scaleio1'] }
+file_glob_name: sds-
+scaleio_role_environment:
+        - key: "MDM_IP"
+          value: "{{ scaleio_mdm_ips }}"

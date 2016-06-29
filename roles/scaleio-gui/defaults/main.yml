@@ -1,2 +1,6 @@
 # Skip Java installation for ScaleIO (assume it's on the system)
 scaleio_skip_java: false
+file_glob_name: gui
+scaleio_role_environment:
+        - key: "MDM_IP"
+          value: "{{ scaleio_mdm_ips }}"

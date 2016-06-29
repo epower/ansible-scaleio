@@ -1,2 +1,6 @@
-node_is_manager: 0
 file_glob_name: gateway
+scaleio_role_environment:
+        - key: "MDM_IP"
+          value: "{{ scaleio_mdm_ips }}"
+        - key: "GATEWAY_ADMIN_PASSWORD"
+          value: "{{ scaleio_gateway_admin_password }}"

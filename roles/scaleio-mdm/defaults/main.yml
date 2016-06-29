@@ -2,3 +2,8 @@
 scaleio_skip_java: false
 scaleio_mdm_primary_hostname: ''
 scaleio_mdm_primary_ip: ''
+scaleio_role_environment:
+        - key: "MDM_IP"
+          value: "{{ scaleio_mdm_ips }}"
+        - key: "MDM_ROLE_IS_MANAGER"
+          value: 1

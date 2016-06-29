@@ -1,9 +1,10 @@
 #ANSIBLE_FLAGS ?= -b -i hosts -e "ansible_python_interpreter=/usr/bin/python"
-ANSIBLE_FLAGS ?= -b -i hosts ansible_python_interpreter: "/usr/bin/python"
+ANSIBLE_FLAGS ?= -b -i hosts -e ansible_python_interpreter="/usr/bin/python"
 SCALEIO_COMMON_FILE_INSTALL_FILE_LOCATION ?= ../scaleio-files
 TRITON_EXEC=$(HOME)/node_modules/triton/bin/triton
 TRITON_NETWORK=e1c9d08b
 TRITON_UBUNTU_IMG=37d3b920
+TRITON_CENTOS_IMG=d8e65ea2
 TRITON_PACKAGE=34b8cc69
 SSH_CONFIG=test/triton/ssh-config
 
@@ -24,7 +25,7 @@ test-ubuntu-trusty: prep-ubuntu-env
 	site.yml
 
 .PHONY:
-test-centos-7: clean
+test-centos-7: prep-centos-env
 	ansible-playbook $(ANSIBLE_FLAGS) \
 	--ssh-common-args="-F $(SSH_CONFIG)" \
 	-e "scaleio_interface=enp0s8" \
@@ -41,7 +42,6 @@ test: test-ubuntu-trusty test-centos-7
 
 .PHONY:
 prep-ubuntu-env: clean-ubuntu-env
-	touch ssh-config
 	for node in node0 node1 node2 node3 node4 ; do \
 		$(TRITON_EXEC) inst create -w -n $$node -t scaleio=ubuntu -M "user-script=test/triton/user-script.sh" -N $(TRITON_NETWORK) $(TRITON_UBUNTU_IMG) $(TRITON_PACKAGE) ; \
 		echo "Host $$node" >> $(SSH_CONFIG) ; \
@@ -56,6 +56,22 @@ prep-ubuntu-env: clean-ubuntu-env
 	done
 	sleep 10
 
+.PHONY:
+prep-centos-env: clean-centos-env
+	for node in node0 node1 node2 node3 node4 ; do \
+                $(TRITON_EXEC) inst create -w -n $$node -t scaleio=centos -M "user-script=test/triton/user-script.sh" -N $(TRITON_NETWORK) $(TRITON_CENTOS_IMG) $(TRITON_PACKAGE) ; \
+                echo "Host $$node" >> $(SSH_CONFIG) ; \
+                echo "HostName `$(TRITON_EXEC) inst ip $$node`" >> $(SSH_CONFIG) ; \
+                echo "User root" >> $(SSH_CONFIG) ; \
+                echo "Port 22" >> $(SSH_CONFIG) ; \
+                echo "UserKnownHostsFile /dev/null" >> $(SSH_CONFIG) ; \
+                echo "StrictHostKeyChecking no" >> $(SSH_CONFIG) ; \
+                echo "PasswordAuthentication no" >> $(SSH_CONFIG) ; \
+                echo "IdentitiesOnly yes" >> $(SSH_CONFIG) ; \
+                echo "LogLevel FATAL" >> $(SSH_CONFIG) ; \
+        done
+	sleep 10
+
 
 .PHONY:
 clean-ubuntu-env:
@@ -64,6 +80,13 @@ clean-ubuntu-env:
 	done
 	if [ -f $(SSH_CONFIG) ]; then rm $(SSH_CONFIG) ; fi
 	
+.PHONY:
+clean-centos-env:
+	for node in `$(TRITON_EXEC) inst ls -Ho id`; do \
+                $(TRITON_EXEC) inst rm -w $$node ; \
+        done
+	if [ -f $(SSH_CONFIG) ]; then rm $(SSH_CONFIG) ; fi
+        
 
 .PHONY:
 clean:

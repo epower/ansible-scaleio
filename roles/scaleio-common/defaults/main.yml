@@ -1,2 +1,3 @@
 # Location of the files that will need to be installed
 scaleio_common_file_install_file_location: "../files/"
+scaleio_common_packages:

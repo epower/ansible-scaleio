@@ -1,3 +1,6 @@
 # vim:ft=ansible:
 ---
+  - name: Upload package wrapper
+    template: dest="/var/tmp/package_wrapper.sh" src="roles/scaleio-common/templates/package_wrapper.sh.j2" mode="0775" owner="root" group="root" force="yes"
+
   - include: "install_scaleio_{{ ansible_distribution }}.yml"

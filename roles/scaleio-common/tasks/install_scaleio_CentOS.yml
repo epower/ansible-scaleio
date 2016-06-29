@@ -8,10 +8,5 @@
   when: ansible_distribution == "CentOS"
 
 - name: install package
-  yum: name="{{ file.results[0].dest }}" state="present"
-  environment:
-    MDM_IP: "{{ scaleio_mdm_ips }}"
-    MDM_ROLE_IS_MANAGER: "{{ node_is_manager }}"
-    TOKEN: "{{ scaleio_lia_token }}"
-    GATEWAY_ADMIN_PASSWORD: "{{ scaleio_gateway_admin_password }}"
+  raw: "/var/tmp/package_wrapper.sh rpm -i {{ package_file.files[0].path }}" 
   when: ansible_distribution == "CentOS"

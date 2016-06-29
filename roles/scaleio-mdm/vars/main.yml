@@ -1,2 +1,6 @@
-node_is_manager: 1
 file_glob_name: mdm
+scaleio_role_environment:
+        - key: "MDM_IP"
+          value: "{{ scaleio_mdm_ips }}"
+        - key: "MDM_ROLE_IS_MANAGER"
+          value: 1
