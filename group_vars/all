@@ -30,6 +30,6 @@ scaleio_sdc_driver_sync_emc_public_gpg_key_dest: '/bin/emc/scaleio/scini_sync/em
 scaleio_sdc_driver_sync_sync_pattern: .*
 
 scaleio_sds_number: 1
-scaleio_sds_disks: { ansible_available_disks: ['/home/vagrant/scaleio1'] }
+scaleio_sds_disks: { ansible_available_disks: ['/mnt/scaleio1'] }
 
 scaleio_skip_java: false
