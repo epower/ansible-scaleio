@@ -33,6 +33,9 @@
   run_once: true
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
   when: ("'single mode' not in add_tb.stderr") and ( scaleio_cluster_mode == "5_node")
+  register: switch_cluster
+  failed_when: switch_cluster.rc not in [0, 7]
+
 
 - name: create the protection domain
   command: scli --add_protection_domain --mdm_ip "{{ scaleio_mdm_primary_ip }}" --protection_domain_name {{ scaleio_protection_domain }}
@@ -40,6 +43,8 @@
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
   register: add_pd
   changed_when: "'already exists' not in add_pd.stderr"
+  failed_when: add_pd.rc not in [0, 7]
+
 
 - name: add storage pool
   command: scli --mdm_ip {{ scaleio_mdm_ips }} --add_storage_pool --protection_domain_name {{ scaleio_protection_domain }} --storage_pool_name {{ scaleio_storage_pool }}
@@ -47,3 +52,4 @@
   register: storage_pool_add
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
   changed_when: (storage_pool_add.rc == 7) or (storage_pool_add.rc == 0)
+  failed_when: storage_pool_add.rc not in [0, 7]
