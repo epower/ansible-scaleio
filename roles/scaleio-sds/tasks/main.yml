@@ -14,7 +14,7 @@
   set_fact: disks="{{ scaleio_sds_disks }}"
 
 - name: login to mdm
-  command: scli --login --mdm_ip {{ scaleio_mdm_ips }} --username admin --password "{{ scaleio_password }}"
+  command: scli --login --mdm_ip {{ scaleio_mdm_ips }} --username admin --password "{{ scaleio_password }}" --approve_certificate
   run_once: true
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
 
