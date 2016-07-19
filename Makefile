@@ -1,6 +1,6 @@
 #ANSIBLE_FLAGS ?= -b -i hosts -e "ansible_python_interpreter=/usr/bin/python"
 ANSIBLE_FLAGS ?= -b -i hosts -e ansible_python_interpreter="/usr/bin/python"
-SCALEIO_COMMON_FILE_INSTALL_FILE_LOCATION ?= ../scaleio-files
+SCALEIO_COMMON_FILE_INSTALL_FILE_LOCATION ?= /vol0/scaleio-files
 TRITON_EXEC=$(HOME)/node_modules/triton/bin/triton
 TRITON_NETWORK=e1c9d08b
 TRITON_UBUNTU_IMG=37d3b920
@@ -20,8 +20,8 @@ test-ubuntu-trusty: prep-ubuntu-env
     	-e "scaleio_gateway_is_redundant=false" \
 	-e "scaleio_gateway_virtual_ip=192.168.33.49" \
 	-e "scaleio_gateway_virtual_interface=eth0" \
-	-e "scaleio_common_file_install_file_location=$(SCALEIO_COMMON_FILE_INSTALL_FILE_LOCATION)/2.0/Ubuntu/14.04" \
-	-e "scaleio_sdc_driver_sync_emc_public_gpg_key_src=$(SCALEIO_COMMON_FILE_INSTALL_FILE_LOCATION)/2.0/common/RPM-GPG-KEY-ScaleIO_2.0.5014.0" \
+	-e "scaleio_common_file_install_file_location=$(SCALEIO_COMMON_FILE_INSTALL_FILE_LOCATION)/2.0.0.1/Ubuntu/14.04" \
+	-e "scaleio_sdc_driver_sync_emc_public_gpg_key_src=$(SCALEIO_COMMON_FILE_INSTALL_FILE_LOCATION)/2.0.0.1/common/RPM-GPG-KEY-ScaleIO_2.0.*.0" \
 	site.yml
 
 .PHONY:
@@ -54,7 +54,7 @@ prep-ubuntu-env: clean-ubuntu-env
   		echo "IdentitiesOnly yes" >> $(SSH_CONFIG) ; \
   		echo "LogLevel FATAL" >> $(SSH_CONFIG) ; \
 	done
-	sleep 10
+	sleep 15
 
 .PHONY:
 prep-centos-env: clean-centos-env
@@ -70,7 +70,7 @@ prep-centos-env: clean-centos-env
                 echo "IdentitiesOnly yes" >> $(SSH_CONFIG) ; \
                 echo "LogLevel FATAL" >> $(SSH_CONFIG) ; \
         done
-	sleep 10
+	sleep 15
 
 
 .PHONY:
