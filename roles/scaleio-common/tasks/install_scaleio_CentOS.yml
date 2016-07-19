@@ -7,6 +7,11 @@
     - "{{  scaleio_common_file_install_file_location }}/*{{ file_glob_name }}*"
   when: ansible_distribution == "CentOS"
 
+- name: list the rpm file
+  register: package_file
+  find: paths="/var/tmp/" patterns="*{{ file_glob_name }}*.rpm"
+  when: ansible_distribution == "CentOS"
+
 - name: install package
-  raw: "/var/tmp/package_wrapper.sh rpm -i {{ package_file.files[0].path }}" 
+  raw: "/var/tmp/package_wrapper.sh rpm -i {{ package_file.files[0].path }}"
   when: ansible_distribution == "CentOS"
