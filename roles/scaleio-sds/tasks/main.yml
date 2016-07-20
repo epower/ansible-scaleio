@@ -24,7 +24,7 @@
   changed_when: ('already in use' in add_sds.stderr) or (add_sds.rc == 0)
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
   ignore_errors: yes
-  when: {{scaleio_fault_sets}} is not defined
+  when: scaleio_fault_sets is not defined
 
 - name: add sds with fault set
   command: scli --add_sds --mdm_ip {{ scaleio_mdm_ips }} --sds_ip {{ hostvars[inventory_hostname]['ansible_'+scaleio_interface]['ipv4']['address'] }} --storage_pool_name {{ scaleio_storage_pool }} --device_path {{ disks.ansible_available_disks|join(',') }} --sds_name "{{ inventory_hostname}}" --protection_domain_name {{ scaleio_protection_domain }} --fault_set_name {{ item.fs }}
@@ -32,5 +32,5 @@
   changed_when: ('already in use' in add_sds.stderr) or (add_sds.rc == 0)
   delegate_to: "{{ scaleio_mdm_primary_hostname }}"
   ignore_errors: yes
-  when: {{scaleio_fault_sets}} is defined and item.sds == inventory_hostname
+  when: scaleio_fault_sets is defined and "{{ item.sds }}" == "{{ inventory_hostname }}"
   with_items: scaleio_fault_sets
