@@ -41,6 +41,14 @@
   register: add_pd
   changed_when: "'already exists' not in add_pd.stderr"
 
+- name: add fault set
+  command: scli --add_fault_set --protection_domain_name "{{ scaleio_protection_domain }}" --fault_set_name "{{ item }}"
+  with_items: "{{ scaleio_fault_set }}"
+  run_once: true
+  delegate_to: "{{ scaleio_mdm_primary_hostname }}"
+  register: add_fs
+
+
 - name: add storage pool
   command: scli --mdm_ip {{ scaleio_mdm_ips }} --add_storage_pool --protection_domain_name {{ scaleio_protection_domain }} --storage_pool_name {{ scaleio_storage_pool }}
   run_once: true
